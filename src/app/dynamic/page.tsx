@@ -1,7 +1,20 @@
+'use client';
+
+import { useUserPreferences } from '@/hooks/useUserPreferences';
+
 export default function DynamicContent() {
+  const { hasMounted, userPreferences } = useUserPreferences();
+
   return (
     <div>
-      <h1>Dynamic content goes here</h1>
+      {!hasMounted && <p>Loading...</p>}
+      {hasMounted && (
+        <div>
+          <p>Service Type: {userPreferences.serviceType}</p>
+          <p>Budget: {userPreferences.budget}</p>
+          <p>Is First Home: {userPreferences.isFirstHome ? 'Yes' : 'No'}</p>
+        </div>
+      )}
     </div>
   );
 }
