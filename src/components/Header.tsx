@@ -25,6 +25,12 @@ export const Header = () => {
         >
           Contact
         </Link>
+        <Link
+          className={clsx(pathname === '/dynamic' && 'bg-amber-800')}
+          href="/dynamic"
+        >
+          Dynamic Content
+        </Link>
       </nav>
     </header>
   );
