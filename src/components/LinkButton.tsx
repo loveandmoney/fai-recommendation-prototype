@@ -14,11 +14,7 @@ export const LinkButton = ({
   const pathname = usePathname();
 
   return (
-    <Button
-      asChild
-      onClick={() => console.log('form!')}
-      variant={pathname === href ? 'default' : 'outline'}
-    >
+    <Button asChild variant={pathname === href ? 'default' : 'outline'}>
       <Link href={href}>{title}</Link>
     </Button>
   );

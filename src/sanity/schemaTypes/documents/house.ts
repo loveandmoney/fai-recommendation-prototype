@@ -1,6 +1,10 @@
 import { House } from 'lucide-react';
 import { defineField, defineType } from 'sanity';
 import { ALT_IMAGE_FRAGMENT, IAltImage } from '../objects/altImage';
+import {
+  DYNAMIC_CONTENT_TAGS_FRAGMENT,
+  IDynamicContentTags,
+} from '../objects/dynamicContentTags';
 
 export const houseSchema = defineType({
   name: 'house',
@@ -35,15 +39,21 @@ export const houseSchema = defineType({
 });
 
 export interface IHouse {
+  _id: string;
   title: string;
   price: number;
   photo: IAltImage;
+  dynamicContentTags: IDynamicContentTags;
 }
 
 export const HOUSE_FRAGMENT = `
+  _id,
   title,
   price,
   photo {
     ${ALT_IMAGE_FRAGMENT}
+  },
+  dynamicContentTags {
+    ${DYNAMIC_CONTENT_TAGS_FRAGMENT}
   }
 `;

@@ -1,10 +1,9 @@
-export type TServiceType = 'house' | 'kdrb' | 'house-and-land';
-export type TBuyerType = 'first-home' | 'investor';
+import { TBuyerTag, TServiceTag } from './lib/dynamicTags';
 
 export interface IUserPreferences {
-  serviceType: TServiceType | null;
+  serviceType: TServiceTag | null;
   budget: number;
-  buyerType: TBuyerType | null;
+  buyerType: TBuyerTag | null;
 }
 
 export interface IImage {

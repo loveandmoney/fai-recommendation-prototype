@@ -1,5 +1,13 @@
 import { defineField, defineType } from 'sanity';
 import { Tag } from 'lucide-react';
+import {
+  BUYER_TAGS,
+  MISC_TAGS,
+  SERVICE_TAGS,
+  TBuyerTag,
+  TMiscTag,
+  TServiceTag,
+} from '@/lib/dynamicTags';
 
 export const dynamicContentTagsSchema = defineType({
   title: 'Dynamic Content Tags',
@@ -8,14 +16,58 @@ export const dynamicContentTagsSchema = defineType({
   icon: Tag,
   fields: [
     defineField({
-      title: 'Tags',
-      name: 'tags',
+      title: 'Buyer Tags',
+      name: 'buyerTags',
       type: 'array',
       options: {
-        layout: 'tags',
+        list: BUYER_TAGS as unknown as string[],
       },
-      of: [{ type: 'reference', to: [{ type: 'dynamicContentTag' }] }],
-      validation: (Rule) => Rule.required().unique(),
+      of: [
+        {
+          type: 'string',
+        },
+      ],
+      validation: (Rule) => Rule.unique(),
+    }),
+    defineField({
+      title: 'Service Tags',
+      name: 'serviceTags',
+      type: 'array',
+      options: {
+        list: SERVICE_TAGS as unknown as string[],
+      },
+      of: [
+        {
+          type: 'string',
+        },
+      ],
+      validation: (Rule) => Rule.unique(),
+    }),
+    defineField({
+      title: 'Misc Tags',
+      name: 'miscTags',
+      type: 'array',
+      options: {
+        list: MISC_TAGS as unknown as string[],
+      },
+      of: [
+        {
+          type: 'string',
+        },
+      ],
+      validation: (Rule) => Rule.unique(),
     }),
   ],
 });
+
+export interface IDynamicContentTags {
+  buyerTags: TBuyerTag[];
+  serviceTags: TServiceTag[];
+  miscTags: TMiscTag[];
+}
+
+export const DYNAMIC_CONTENT_TAGS_FRAGMENT = `
+  buyerTags,
+  serviceTags,
+  miscTags
+`;

@@ -3,9 +3,9 @@
 import { Button } from './ui/button';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
 import posthog from 'posthog-js';
-import { TBuyerType, TServiceType } from '@/types';
 import { useEffect } from 'react';
 import { Slider } from './ui/slider';
+import { TBuyerTag, TServiceTag } from '@/lib/dynamicTags';
 
 export const Form = () => {
   const { setUserPreferences, userPreferences, hasMounted } =
@@ -13,7 +13,7 @@ export const Form = () => {
 
   const budget = userPreferences.budget;
 
-  const selectBuyerType = (type: TBuyerType) => {
+  const selectBuyerType = (type: TBuyerTag) => {
     posthog.capture('selected_buyer_type', {
       type,
     });
@@ -24,7 +24,7 @@ export const Form = () => {
     }));
   };
 
-  const selectServiceType = (type: TServiceType) => {
+  const selectServiceType = (type: TServiceTag) => {
     posthog.capture('selected_service_type', {
       type,
     });
@@ -98,9 +98,9 @@ export const Form = () => {
             <h2>What type of buyer are you?</h2>
             <div className="flex gap-2">
               <Button
-                onClick={() => selectBuyerType('first-home')}
+                onClick={() => selectBuyerType('first-home-buyer')}
                 variant={
-                  userPreferences.buyerType === 'first-home'
+                  userPreferences.buyerType === 'first-home-buyer'
                     ? 'default'
                     : 'outline'
                 }
