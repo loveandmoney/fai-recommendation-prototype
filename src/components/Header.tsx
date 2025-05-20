@@ -14,10 +14,10 @@ export const Header = () => {
           Home
         </Link>
         <Link
-          className={clsx(pathname === '/about' && 'bg-amber-800')}
-          href="/about"
+          className={clsx(pathname === '/houses' && 'bg-amber-800')}
+          href="/houses"
         >
-          About
+          Houses
         </Link>
         <Link
           className={clsx(pathname === '/contact' && 'bg-amber-800')}

@@ -6,3 +6,11 @@ export interface IUserPreferences {
   budget: number;
   buyerType: TBuyerType | null;
 }
+
+export interface IImage {
+  _type: 'image';
+  asset: {
+    _ref: string;
+    _type: 'reference';
+  };
+}
