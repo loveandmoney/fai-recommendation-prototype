@@ -12,7 +12,7 @@ export default function DynamicContent() {
         <div>
           <p>Service Type: {userPreferences.serviceType}</p>
           <p>Budget: {userPreferences.budget}</p>
-          <p>Is First Home: {userPreferences.isFirstHome ? 'Yes' : 'No'}</p>
+          <p>Buyer type: {userPreferences.buyerType}</p>
         </div>
       )}
     </div>

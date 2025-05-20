@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 
 const initialUserPreferences: IUserPreferences = {
   budget: 0,
-  isFirstHome: null,
+  buyerType: null,
   serviceType: null,
 };
 

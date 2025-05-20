@@ -67,10 +67,13 @@ export const Form = () => {
             <div className="flex gap-2">
               <Button
                 onClick={() =>
-                  setUserPreferences((prev) => ({ ...prev, isFirstHome: true }))
+                  setUserPreferences((prev) => ({
+                    ...prev,
+                    buyerType: 'first-home',
+                  }))
                 }
                 className={clsx(
-                  userPreferences.isFirstHome === true &&
+                  userPreferences.buyerType === 'first-home' &&
                     'bg-amber-800 hover:bg-amber-800'
                 )}
               >
@@ -80,11 +83,11 @@ export const Form = () => {
                 onClick={() =>
                   setUserPreferences((prev) => ({
                     ...prev,
-                    isFirstHome: false,
+                    buyerType: 'investor',
                   }))
                 }
                 className={clsx(
-                  userPreferences.isFirstHome === false &&
+                  userPreferences.buyerType === 'investor' &&
                     'bg-amber-800 hover:bg-amber-800'
                 )}
               >
