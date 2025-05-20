@@ -5,9 +5,21 @@ import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { IHouse } from '@/sanity/schemaTypes/documents/house';
 import Image from 'next/image';
 
-export default function HousesContent({ houses }: { houses: IHouse[] }) {
+export default function HousesContent({
+  houses,
+  defaultFeatureHouseId,
+}: {
+  houses: IHouse[];
+  defaultFeatureHouseId: string;
+}) {
   const { userPreferences, hasMounted } = useUserPreferences();
   const { budget, buyerType, serviceType } = userPreferences;
+
+  const defaultHouse = houses.find(
+    (house) => house._id === defaultFeatureHouseId
+  );
+  const randomHouse = houses[Math.floor(Math.random() * houses.length)];
+  const fallbackHouse = defaultHouse || randomHouse;
 
   if (!hasMounted) return <p>Loading...</p>;
 
@@ -24,11 +36,10 @@ export default function HousesContent({ houses }: { houses: IHouse[] }) {
   ): IHouse | null => {
     if (!tag) return null;
 
-    console.log('Tag:', tag);
-    console.log('Tag selector:', tagSelector);
-
-    const matches = houses.filter((house) =>
-      (tagSelector(house) ?? []).includes(tag)
+    const matches = houses.filter(
+      (house) =>
+        house.dynamicContentTags?.active === true &&
+        (tagSelector(house) ?? []).includes(tag)
     );
     return getMostExpensiveHouseInBudget(matches) || matches[0] || null;
   };
@@ -39,7 +50,6 @@ export default function HousesContent({ houses }: { houses: IHouse[] }) {
       (house) => house.dynamicContentTags.buyerTags
     );
     if (houseByBuyerTag) {
-      console.log('House by buyer tag:', houseByBuyerTag);
       return houseByBuyerTag;
     }
 
@@ -48,19 +58,15 @@ export default function HousesContent({ houses }: { houses: IHouse[] }) {
       (h) => h.dynamicContentTags.serviceTags
     );
     if (houseByServiceTag) {
-      console.log('House by service tag:', houseByServiceTag);
       return houseByServiceTag;
     }
 
     const mostExpensiveHouseInBudget = getMostExpensiveHouseInBudget(houses);
     if (mostExpensiveHouseInBudget) {
-      console.log('Expensive by budget:', mostExpensiveHouseInBudget);
       return mostExpensiveHouseInBudget;
     }
 
-    console.log('Fallback to first house:', houses[0]);
-
-    return houses[0];
+    return fallbackHouse;
   };
 
   const featuredHouse = getFeaturedHouse();

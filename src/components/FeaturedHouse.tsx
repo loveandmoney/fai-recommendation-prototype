@@ -14,7 +14,12 @@ export const FeaturedHouse = ({ photo, price, title }: IHouse) => {
       </div>
 
       <div className=" flex-1 relative aspect-[4/3] rounded-lg overflow-hidden">
-        <Image src={photo.src} alt={photo.alt || ''} fill objectFit="cover" />
+        <Image
+          src={photo.src}
+          alt={photo.alt || ''}
+          className="object-cover"
+          fill
+        />
       </div>
     </div>
   );

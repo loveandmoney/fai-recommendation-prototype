@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity';
+import { HOUSE_FRAGMENT, IHouse } from '../documents/house';
 
 export const settingsSchema = defineType({
   name: 'settings',
@@ -6,17 +7,12 @@ export const settingsSchema = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
+      title: 'Default Featured House',
+      name: 'defaultFeaturedHouse',
+      type: 'reference',
+      to: [{ type: 'house' }],
       validation: (Rule) => Rule.required(),
     }),
-    {
-      title: 'Text',
-      name: 'text',
-      type: 'text',
-      validation: (Rule) => Rule.required(),
-    },
   ],
   preview: {
     prepare: () => ({ title: 'Site settings' }),
@@ -24,11 +20,11 @@ export const settingsSchema = defineType({
 });
 
 export interface ISettings {
-  title: string;
-  text: string;
+  defaultFeaturedHouse: IHouse;
 }
 
 export const SETTINGS_FRAGMENT = `
-  title,
-  text
+  defaultFeaturedHouse-> {
+    ${HOUSE_FRAGMENT}
+  },
 `;

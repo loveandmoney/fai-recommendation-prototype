@@ -1,12 +1,18 @@
-import { HOUSE_FRAGMENT, IHouse } from '../schemaTypes/documents/house';
+import { IDynamicPageSection } from '../schemaTypes/objects/dynamicPageSection';
+import {
+  DYNAMIC_PAGE_FRAGMENT,
+  IDynamicPage,
+} from '../schemaTypes/singletons/dynamicPage';
 import { client } from './client';
 
-export const getHouses: () => Promise<IHouse[]> = async () => {
-  const query = `*[_type == "house"]{
-    ${HOUSE_FRAGMENT}
+export const getDyamicPageContent: () => Promise<
+  IDynamicPageSection[]
+> = async () => {
+  const query = `*[_type == "dynamicPage"]{
+    ${DYNAMIC_PAGE_FRAGMENT}
   }`;
 
-  const data = (await client.fetch(query)) as IHouse[];
+  const data = (await client.fetch(query)) as IDynamicPage[];
 
-  return data;
+  return data?.[0]?.dynamicContent || [];
 };

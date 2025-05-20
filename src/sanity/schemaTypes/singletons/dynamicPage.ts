@@ -1,4 +1,8 @@
 import { defineField, defineType } from 'sanity';
+import {
+  DYNAMIC_PAGE_SECTION_FRAGMENT,
+  IDynamicPageSection,
+} from '../objects/dynamicPageSection';
 
 export const dynamicPageSchema = defineType({
   name: 'dynamicPage',
@@ -6,17 +10,12 @@ export const dynamicPageSchema = defineType({
   type: 'document',
   fields: [
     defineField({
-      name: 'title',
-      title: 'Title',
-      type: 'string',
+      name: 'dynamicContent',
+      title: 'Dynamic Content',
+      type: 'array',
+      of: [{ type: 'dynamicPageSection' }],
       validation: (Rule) => Rule.required(),
     }),
-    {
-      title: 'Text',
-      name: 'text',
-      type: 'text',
-      validation: (Rule) => Rule.required(),
-    },
   ],
   preview: {
     prepare: () => ({ title: 'Dynamic Page Content' }),
@@ -24,11 +23,11 @@ export const dynamicPageSchema = defineType({
 });
 
 export interface IDynamicPage {
-  title: string;
-  text: string;
+  dynamicContent: IDynamicPageSection[];
 }
 
 export const DYNAMIC_PAGE_FRAGMENT = `
-  title,
-  text
+  dynamicContent[] {
+    ${DYNAMIC_PAGE_SECTION_FRAGMENT}
+  }
 `;
