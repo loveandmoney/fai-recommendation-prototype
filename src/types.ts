@@ -1,9 +1,18 @@
-import { TBuyerTag, TServiceTag } from './lib/dynamicTags';
+import {
+  TBuyerTag,
+  TNumberBaths,
+  TNumberBeds,
+  TNumberStories,
+  TServiceTag,
+} from './lib/dynamicTags';
 
 export interface IUserPreferences {
   serviceType: TServiceTag | null;
   budget: number;
   buyerType: TBuyerTag | null;
+  beds: TNumberBeds | null;
+  baths: TNumberBaths | null;
+  stories: TNumberStories | null;
 }
 
 export interface IImage {

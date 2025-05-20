@@ -2,8 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { LUXURY_BUDGET_THRESHOLD_DOLLARS } from '@/constants';
-import { useUserPreferences } from '@/hooks/useUserPreferences';
 import { IDynamicPageSection } from '@/sanity/schemaTypes/objects/dynamicPageSection';
+import { useUserPreferencesStore } from '@/stores/useUserPreferences';
 import Image from 'next/image';
 
 const SECTIONS_TO_DISPLAY = 3;
@@ -13,10 +13,8 @@ export const DynamicPageContent = ({
 }: {
   sections: IDynamicPageSection[];
 }) => {
-  const { userPreferences, hasMounted } = useUserPreferences();
+  const { userPreferences } = useUserPreferencesStore();
   const { budget, buyerType, serviceType } = userPreferences;
-
-  if (!hasMounted) return <p>Loading...</p>;
 
   const filteredSections = sections
     .filter((section) => {
