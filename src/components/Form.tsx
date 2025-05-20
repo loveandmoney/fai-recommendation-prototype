@@ -21,7 +21,6 @@ export const Form = () => {
     posthog.capture('selected_buyer_type', {
       type,
     });
-    posthog.people.set({ buyer_type: type });
     setUserPreferences((prev) => ({
       ...prev,
       buyerType: type,
@@ -32,7 +31,6 @@ export const Form = () => {
     posthog.capture('selected_service_type', {
       type,
     });
-    posthog.people.set({ service_type: type });
     setUserPreferences((prev) => ({
       ...prev,
       serviceType: type,
@@ -46,13 +44,12 @@ export const Form = () => {
     }));
   };
 
-  // Debounce budget posthog update
+  // Debounce budget PostHog event
   useEffect(() => {
     const DEBOUNCE_TIME_MS = 500;
 
     const timeout = setTimeout(() => {
       posthog.capture('selected_budget', { budget });
-      posthog.people.set({ budget });
     }, DEBOUNCE_TIME_MS);
 
     return () => clearTimeout(timeout);
@@ -61,6 +58,7 @@ export const Form = () => {
   return (
     <>
       {!hasMounted && <p>Loading...</p>}
+
       {hasMounted && (
         <div className="grid gap-4">
           <div>

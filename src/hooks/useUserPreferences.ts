@@ -1,5 +1,6 @@
 import { USER_PREFERENCES_LS_KEY } from '@/constants';
 import { IUserPreferences } from '@/types';
+// import posthog from 'posthog-js';
 import { useEffect, useState } from 'react';
 
 const initialUserPreferences: IUserPreferences = {
@@ -32,6 +33,7 @@ export const useUserPreferences = () => {
     setHasMounted(true);
   }, []);
 
+  // Sync user preferences to local storage
   useEffect(() => {
     if (!hasMounted) {
       return;
@@ -41,6 +43,21 @@ export const useUserPreferences = () => {
       USER_PREFERENCES_LS_KEY,
       JSON.stringify(userPreferences)
     );
+  }, [userPreferences, hasMounted]);
+
+  // Sync user preferences to PostHog with debounce
+  useEffect(() => {
+    const DEBOUNCE_TIME_MS = 500;
+    if (!hasMounted) {
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      // todo - couldn't get this working
+      // posthog.setPersonProperties(userPreferences);
+    }, DEBOUNCE_TIME_MS);
+
+    return () => clearTimeout(timeout);
   }, [userPreferences, hasMounted]);
 
   return {
