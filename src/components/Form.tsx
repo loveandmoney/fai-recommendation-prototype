@@ -3,10 +3,56 @@
 import { Button } from './ui/button';
 import clsx from 'clsx';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
+import posthog from 'posthog-js';
+import { TBuyerType, TServiceType } from '@/types';
+import { useEffect } from 'react';
 
 export const Form = () => {
   const { setUserPreferences, userPreferences, hasMounted } =
     useUserPreferences();
+
+  const budget = userPreferences.budget;
+
+  const selectBuyerType = (type: TBuyerType) => {
+    posthog.capture('selected_buyer_type', {
+      type,
+    });
+    posthog.people.set({ buyer_type: type });
+    setUserPreferences((prev) => ({
+      ...prev,
+      buyerType: type,
+    }));
+  };
+
+  const selectServiceType = (type: TServiceType) => {
+    posthog.capture('selected_service_type', {
+      type,
+    });
+    posthog.people.set({ service_type: type });
+    setUserPreferences((prev) => ({
+      ...prev,
+      serviceType: type,
+    }));
+  };
+
+  const selectBudget = (budget: number) => {
+    setUserPreferences((prev) => ({
+      ...prev,
+      budget,
+    }));
+  };
+
+  // Debounce budget posthog update
+  useEffect(() => {
+    const DEBOUNCE_TIME_MS = 500;
+
+    const timeout = setTimeout(() => {
+      posthog.capture('selected_budget', { budget });
+      posthog.people.set({ budget });
+    }, DEBOUNCE_TIME_MS);
+
+    return () => clearTimeout(timeout);
+  }, [budget]);
 
   return (
     <>
@@ -17,12 +63,7 @@ export const Form = () => {
             <h2>What are you looking for</h2>
             <div className="flex gap-2">
               <Button
-                onClick={() =>
-                  setUserPreferences((prev) => ({
-                    ...prev,
-                    serviceType: 'house',
-                  }))
-                }
+                onClick={() => selectServiceType('house')}
                 className={clsx(
                   userPreferences.serviceType === 'house' &&
                     'bg-amber-800 hover:bg-amber-800'
@@ -31,12 +72,7 @@ export const Form = () => {
                 House
               </Button>
               <Button
-                onClick={() =>
-                  setUserPreferences((prev) => ({
-                    ...prev,
-                    serviceType: 'kdrb',
-                  }))
-                }
+                onClick={() => selectServiceType('kdrb')}
                 className={clsx(
                   userPreferences.serviceType === 'kdrb' &&
                     'bg-amber-800 hover:bg-amber-800'
@@ -46,12 +82,7 @@ export const Form = () => {
               </Button>
 
               <Button
-                onClick={() =>
-                  setUserPreferences((prev) => ({
-                    ...prev,
-                    serviceType: 'house-and-land',
-                  }))
-                }
+                onClick={() => selectServiceType('house-and-land')}
                 className={clsx(
                   userPreferences.serviceType === 'house-and-land' &&
                     'bg-amber-800 hover:bg-amber-800'
@@ -66,12 +97,7 @@ export const Form = () => {
             <h2>Is this your first house?</h2>
             <div className="flex gap-2">
               <Button
-                onClick={() =>
-                  setUserPreferences((prev) => ({
-                    ...prev,
-                    buyerType: 'first-home',
-                  }))
-                }
+                onClick={() => selectBuyerType('first-home')}
                 className={clsx(
                   userPreferences.buyerType === 'first-home' &&
                     'bg-amber-800 hover:bg-amber-800'
@@ -80,12 +106,7 @@ export const Form = () => {
                 First Home
               </Button>
               <Button
-                onClick={() =>
-                  setUserPreferences((prev) => ({
-                    ...prev,
-                    buyerType: 'investor',
-                  }))
-                }
+                onClick={() => selectBuyerType('investor')}
                 className={clsx(
                   userPreferences.buyerType === 'investor' &&
                     'bg-amber-800 hover:bg-amber-800'
@@ -105,18 +126,13 @@ export const Form = () => {
                   min="0"
                   max="5000000"
                   value={userPreferences.budget}
-                  onChange={(e) =>
-                    setUserPreferences((prev) => ({
-                      ...prev,
-                      budget: parseInt(e.target.value, 10),
-                    }))
-                  }
-                  step="1000"
+                  onChange={(e) => selectBudget(parseInt(e.target.value, 10))}
+                  step="10000"
                   className="w-full"
                 />
               </label>
 
-              <p>${userPreferences.budget}</p>
+              <p>${userPreferences.budget.toLocaleString()}</p>
             </div>
           </div>
         </div>
