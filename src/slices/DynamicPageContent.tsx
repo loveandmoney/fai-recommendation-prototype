@@ -44,7 +44,7 @@ export const DynamicPageContent = ({
     .slice(0, SECTIONS_TO_DISPLAY);
 
   return (
-    <div className="grid gap-4">
+    <>
       {filteredSections.map(({ header, image, _key }) => (
         <div
           key={_key}
@@ -64,6 +64,6 @@ export const DynamicPageContent = ({
           </div>
         </div>
       ))}
-    </div>
+    </>
   );
 };

@@ -5,13 +5,12 @@ import {
   SETTINGS_FRAGMENT,
 } from '@/sanity/schemaTypes/singletons/settings';
 import { client } from '@/sanity/lib/client';
+interface IQueryResponse {
+  houses: IHouse[];
+  settings: ISettings;
+}
 
 export default async function HousesPage() {
-  interface IQueryResponse {
-    houses: IHouse[];
-    settings: ISettings;
-  }
-
   const getPageData: () => Promise<IQueryResponse> = async () => {
     const query = `{
       "houses": *[_type == "house"] {

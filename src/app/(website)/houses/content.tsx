@@ -2,6 +2,7 @@
 
 import { FeaturedHouse } from '@/components/FeaturedHouse';
 import { SearchFilters } from '@/components/SearchFilters';
+import { useFilteredHouses } from '@/hooks/useFilteredHouses';
 import { IHouse } from '@/sanity/schemaTypes/documents/house';
 import { useUserPreferencesStore } from '@/stores/useUserPreferences';
 import Image from 'next/image';
@@ -16,6 +17,7 @@ export default function HousesContent({
   const { userPreferences, isInitialUserPreferences } =
     useUserPreferencesStore();
   const { budget, buyerType, serviceType } = userPreferences;
+  const { filteredHouses } = useFilteredHouses({ houses });
 
   const defaultHouse = houses.find(
     (house) => house._id === defaultFeatureHouseId
@@ -75,74 +77,6 @@ export default function HousesContent({
 
   const featuredHouse = getFeaturedHouse();
   const allOtherHouses = houses.filter((h) => h._id !== featuredHouse._id);
-
-  const getFilteredHouses = () => {
-    const filteredByBudget = houses.filter((house) => house.price <= budget);
-
-    const filteredByBeds = filteredByBudget.filter((house) => {
-      if (!userPreferences.beds) return true;
-
-      switch (userPreferences.beds) {
-        case '3+':
-          if (
-            house.beds === '3+' ||
-            house.beds === '4+' ||
-            house.beds === '5+'
-          ) {
-            return true;
-          }
-        case '4+':
-          if (house.beds === '4+' || house.beds === '5+') {
-            return true;
-          }
-        case '5+':
-          if (house.beds === '5+') {
-            return true;
-          }
-      }
-    });
-
-    const filteredByBaths = filteredByBeds.filter((house) => {
-      if (!userPreferences.baths) return true;
-
-      switch (userPreferences.baths) {
-        case '2+':
-          if (
-            house.baths === '2+' ||
-            house.baths === '3+' ||
-            house.baths === '4+'
-          ) {
-            return true;
-          }
-        case '3+':
-          if (house.baths === '3+' || house.baths === '4+') {
-            return true;
-          }
-        case '4+':
-          if (house.baths === '4+') {
-            return true;
-          }
-      }
-    });
-
-    const filteredByStories = filteredByBaths.filter((house) => {
-      if (!userPreferences.stories) return true;
-
-      switch (userPreferences.stories) {
-        case '1':
-          if (house.stories === '1' || house.stories === '2') {
-            return true;
-          }
-        case '2':
-          if (house.stories === '2') {
-            return true;
-          }
-      }
-    });
-
-    return filteredByStories;
-  };
-  const filteredHouses = getFilteredHouses();
 
   return (
     <div className="grid grid-cols-4 gap-4">
