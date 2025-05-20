@@ -1,11 +1,11 @@
 'use client';
 
 import { Button } from './ui/button';
-import clsx from 'clsx';
 import { useUserPreferences } from '@/hooks/useUserPreferences';
 import posthog from 'posthog-js';
 import { TBuyerType, TServiceType } from '@/types';
 import { useEffect } from 'react';
+import { Slider } from './ui/slider';
 
 export const Form = () => {
   const { setUserPreferences, userPreferences, hasMounted } =
@@ -64,29 +64,30 @@ export const Form = () => {
             <div className="flex gap-2">
               <Button
                 onClick={() => selectServiceType('house')}
-                className={clsx(
-                  userPreferences.serviceType === 'house' &&
-                    'bg-amber-800 hover:bg-amber-800'
-                )}
+                variant={
+                  userPreferences.serviceType === 'house'
+                    ? 'default'
+                    : 'outline'
+                }
               >
                 House
               </Button>
               <Button
                 onClick={() => selectServiceType('kdrb')}
-                className={clsx(
-                  userPreferences.serviceType === 'kdrb' &&
-                    'bg-amber-800 hover:bg-amber-800'
-                )}
+                variant={
+                  userPreferences.serviceType === 'kdrb' ? 'default' : 'outline'
+                }
               >
                 KDRB
               </Button>
 
               <Button
                 onClick={() => selectServiceType('house-and-land')}
-                className={clsx(
-                  userPreferences.serviceType === 'house-and-land' &&
-                    'bg-amber-800 hover:bg-amber-800'
-                )}
+                variant={
+                  userPreferences.serviceType === 'house-and-land'
+                    ? 'default'
+                    : 'outline'
+                }
               >
                 House + Land
               </Button>
@@ -94,23 +95,25 @@ export const Form = () => {
           </div>
 
           <div>
-            <h2>Is this your first house?</h2>
+            <h2>What type of buyer are you?</h2>
             <div className="flex gap-2">
               <Button
                 onClick={() => selectBuyerType('first-home')}
-                className={clsx(
-                  userPreferences.buyerType === 'first-home' &&
-                    'bg-amber-800 hover:bg-amber-800'
-                )}
+                variant={
+                  userPreferences.buyerType === 'first-home'
+                    ? 'default'
+                    : 'outline'
+                }
               >
                 First Home
               </Button>
               <Button
                 onClick={() => selectBuyerType('investor')}
-                className={clsx(
-                  userPreferences.buyerType === 'investor' &&
-                    'bg-amber-800 hover:bg-amber-800'
-                )}
+                variant={
+                  userPreferences.buyerType === 'investor'
+                    ? 'default'
+                    : 'outline'
+                }
               >
                 Investment
               </Button>
@@ -121,13 +124,12 @@ export const Form = () => {
             <div className="w-full">
               <label className="block w-full">
                 <span className="block mb-2">Budget</span>
-                <input
-                  type="range"
-                  min="0"
-                  max="5000000"
-                  value={userPreferences.budget}
-                  onChange={(e) => selectBudget(parseInt(e.target.value, 10))}
-                  step="10000"
+                <Slider
+                  min={0}
+                  max={5000000}
+                  value={[userPreferences.budget]}
+                  onValueChange={(value) => selectBudget(value[0])}
+                  step={10000}
                   className="w-full"
                 />
               </label>

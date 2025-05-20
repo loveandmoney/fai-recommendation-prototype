@@ -5,7 +5,7 @@ export default async function Houses() {
   const houses = await getHouses();
 
   return (
-    <ul className="grid gap-4 grid-cols-4 p-8">
+    <ul className="grid gap-4 grid-cols-4">
       {houses.map(({ price, title, photo }, i) => (
         <li key={i} className="border rounded-lg p-4">
           <h2 className="font-bold text-lg">{title}</h2>

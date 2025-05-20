@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { PostHogProvider } from './providers';
 import { Header } from '@/components/Header';
+import clsx from 'clsx';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -25,10 +26,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <div
+      className={clsx(geistSans.variable, geistMono.variable, 'antialiased ')}
+    >
       <PostHogProvider>
         <Header />
-        {children}
+        <main className="p-8">{children}</main>
       </PostHogProvider>
     </div>
   );
