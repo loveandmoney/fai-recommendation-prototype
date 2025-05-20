@@ -14,6 +14,11 @@ export const useUserPreferences = () => {
     initialUserPreferences
   );
 
+  const resetUserPreferences = () => {
+    setUserPreferences(initialUserPreferences);
+    localStorage.removeItem(USER_PREFERENCES_LS_KEY);
+  };
+
   // Get initial user preferences from local storage if available, otherwise use default values
   useEffect(() => {
     const userPreferencesFromStorage = JSON.parse(
@@ -42,5 +47,6 @@ export const useUserPreferences = () => {
     userPreferences,
     setUserPreferences,
     hasMounted,
+    resetUserPreferences,
   };
 };

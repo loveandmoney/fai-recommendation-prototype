@@ -8,8 +8,12 @@ import { Slider } from './ui/slider';
 import { TBuyerTag, TServiceTag } from '@/lib/dynamicTags';
 
 export const Form = () => {
-  const { setUserPreferences, userPreferences, hasMounted } =
-    useUserPreferences();
+  const {
+    setUserPreferences,
+    userPreferences,
+    hasMounted,
+    resetUserPreferences,
+  } = useUserPreferences();
 
   const budget = userPreferences.budget;
 
@@ -137,6 +141,8 @@ export const Form = () => {
               <p>${userPreferences.budget.toLocaleString()}</p>
             </div>
           </div>
+
+          <Button onClick={resetUserPreferences}>Reset Preferences</Button>
         </div>
       )}
     </>
