@@ -110,23 +110,31 @@ export default function HousesContent({
 
       {!isInitialUserPreferences && (
         <div className="grid gap-8 col-span-3">
-          <ul className="grid gap-4 grid-cols-4">
-            {filteredHouses.map(({ price, title, photo }, i) => (
-              <li key={i} className="border rounded-lg p-4">
-                <h2 className="font-bold text-lg">{title}</h2>
-                <p className="mb-2">${price.toLocaleString()}.00</p>
-                <div className="rounded-md overflow-hidden max-w-full aspect-square">
-                  <Image
-                    className="w-full h-full"
-                    width={500}
-                    height={500}
-                    src={photo.src}
-                    alt={photo.alt || ''}
-                  />
-                </div>
-              </li>
-            ))}
-          </ul>
+          {filteredHouses?.[0] && (
+            <ul className="grid gap-4 grid-cols-4">
+              {filteredHouses.map(({ price, title, photo }, i) => (
+                <li key={i} className="border rounded-lg p-4">
+                  <h2 className="font-bold text-lg">{title}</h2>
+                  <p className="mb-2">${price.toLocaleString()}.00</p>
+                  <div className="rounded-md overflow-hidden max-w-full aspect-square">
+                    <Image
+                      className="w-full h-full"
+                      width={500}
+                      height={500}
+                      src={photo.src}
+                      alt={photo.alt || ''}
+                    />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {!filteredHouses?.[0] && (
+            <div className="text-lg flex items-center justify-center h-full p-4 rounded-lg">
+              <h2 className="text-black/50">No houses found</h2>
+            </div>
+          )}
         </div>
       )}
     </div>
