@@ -7,7 +7,6 @@ import { trackHouseView } from '@/lib/homeRecommendations';
 
 export const HouseLink = ({ house }: { house: IHouse }) => {
   const handleClick = () => {
-    console.log('click!');
     trackHouseView(house);
   };
 

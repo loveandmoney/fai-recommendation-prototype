@@ -6,12 +6,14 @@ import {
   calculateVariance,
   getViewedHouses,
   resetViewedHouses,
+  TVariance,
 } from '@/lib/homeRecommendations';
 import { IHouse } from '@/data/houses';
 import { usePathname } from 'next/navigation';
 
 export const RecommendationDebug = () => {
   const [viewedHouses, setViewedHouses] = useState<IHouse[]>([]);
+  const [variance, setVariance] = useState<TVariance>(calculateVariance([]));
   const pathname = usePathname();
 
   const viewedHouseNames = viewedHouses.map((h) => h.name);
@@ -19,12 +21,13 @@ export const RecommendationDebug = () => {
   const handleReset = () => {
     resetViewedHouses();
     setViewedHouses(getViewedHouses());
+    calculateVariance([]);
   };
 
-  const variance = calculateVariance(viewedHouses);
-
   useEffect(() => {
-    setViewedHouses(getViewedHouses());
+    const viewed = getViewedHouses();
+    setViewedHouses(viewed);
+    setVariance(calculateVariance(viewed));
   }, [pathname]);
 
   return (
@@ -37,11 +40,12 @@ export const RecommendationDebug = () => {
 
         <div>
           <pre>--Variance--</pre>
-          {Object.entries(variance).map(([key, { min, max }]) => (
-            <pre key={key}>
-              {key}: {min} - {max}
-            </pre>
-          ))}
+          {variance &&
+            Object.entries(variance).map(([key, { min, max }]) => (
+              <pre key={key}>
+                {key}: {min} - {max}
+              </pre>
+            ))}
         </div>
 
         <Button onClick={handleReset} variant="secondary">

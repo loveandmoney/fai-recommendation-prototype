@@ -1,12 +1,28 @@
 import { houses, IHouse } from '@/data/houses';
 
+export type TVariance = Record<
+  'cost' | 'beds' | 'bathrooms' | 'livingRooms' | 'stories',
+  {
+    min: number;
+    max: number;
+  }
+>;
+
 const LS_KEY = 'user_viewed_houses';
-const VARIANCE_PADDING_COST_FACTOR = 0.25;
+const VARIANCE_PADDING_COST_FACTOR = 0.2;
 const VARIANCE_PADDING_STORIES = 0;
 const VARIANCE_PADDING_BEDS = 1;
 const VARIANCE_PADDING_BATHS = 1;
 const VARIANCE_PADDING_LIVINGROOMS = 1;
 const HISTORY_LIMIT = 3;
+
+const properties = [
+  'cost',
+  'beds',
+  'bathrooms',
+  'livingRooms',
+  'stories',
+] as const;
 
 export function getViewedHouses(): IHouse[] {
   const data = localStorage.getItem(LS_KEY);
@@ -18,20 +34,11 @@ export function resetViewedHouses() {
 }
 
 export function trackHouseView(house: IHouse) {
-  const current = getViewedHouses();
+  const current = getViewedHouses().filter((h) => h.id !== house.id);
   const updated = [...current.slice(-HISTORY_LIMIT + 1), house];
   localStorage.setItem(LS_KEY, JSON.stringify(updated));
 }
-
 export function calculateVariance(houses: IHouse[]) {
-  const properties = [
-    'cost',
-    'beds',
-    'bathrooms',
-    'livingRooms',
-    'stories',
-  ] as const;
-
   return properties.reduce(
     (acc, key) => {
       const values = houses.map((house) => house[key]);
@@ -76,16 +83,11 @@ export function getRecommendedHouses(): IHouse[] {
 
   const variance = calculateVariance(viewed);
 
-  return houses.filter((house) => {
-    return (
-      house.cost >= variance.cost.min &&
-      house.cost <= variance.cost.max &&
-      house.beds >= variance.beds.min &&
-      house.beds <= variance.beds.max &&
-      house.bathrooms >= variance.bathrooms.min &&
-      house.bathrooms <= variance.bathrooms.max &&
-      house.livingRooms >= variance.livingRooms.min &&
-      house.livingRooms <= variance.livingRooms.max
-    );
-  });
+  return houses.filter((house) =>
+    properties.every((prop) => {
+      const value = house[prop];
+      const { min, max } = variance[prop];
+      return value >= min && value <= max;
+    })
+  );
 }

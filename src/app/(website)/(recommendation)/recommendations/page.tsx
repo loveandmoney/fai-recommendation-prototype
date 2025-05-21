@@ -1,9 +1,8 @@
 'use client';
 
-import { HouseData } from '@/components/HouseData';
+import { HouseLink } from '@/components/HouseLink';
 import { IHouse } from '@/data/houses';
 import { getRecommendedHouses } from '@/lib/homeRecommendations';
-import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 export default function RecommendationsPage() {
@@ -19,9 +18,7 @@ export default function RecommendationsPage() {
       <ul className="grid grid-cols-4 gap-4">
         {recommendations.map((house) => (
           <li key={house.id}>
-            <Link href={`/house/${house.id}`}>
-              <HouseData house={house} />
-            </Link>
+            <HouseLink house={house} />
           </li>
         ))}
       </ul>
