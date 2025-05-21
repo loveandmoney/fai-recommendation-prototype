@@ -1,4 +1,4 @@
-type TCollection = 'simplicity' | 'bridgewater' | 'elegance';
+export type TCollection = 'simplicity' | 'bridgewater' | 'elegance';
 type TFacade = 'brook' | 'cove' | 'lake' | 'valley' | 'river';
 
 export interface IHouse {
