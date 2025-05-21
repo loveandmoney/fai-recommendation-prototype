@@ -109,21 +109,23 @@ export function getRecommendedHouses(): IHouse[] {
   const viewed = getViewedHouses();
   if (viewed.length === 0) return [];
 
+  const mostRecentId = viewed[viewed.length - 1]?.id;
   const variance = calculateVariance(viewed);
   const preferredCollection = getPreferredCollection(viewed);
 
-  const anchored: IHouse[] = houses.filter((h) => h.ranking === 'anchored');
+  const anchored: IHouse[] = houses.filter(
+    (h) => h.ranking === 'anchored' && h.id !== mostRecentId
+  );
 
   const matching: IHouse[] = houses.filter((house) => {
-    if (house.ranking === 'anchored') return false; // already handled
+    if (house.ranking === 'anchored') return false;
+    if (house.id === mostRecentId) return false;
 
-    const matches = properties.every((prop) => {
+    return properties.every((prop) => {
       const value = house[prop];
       const { min, max } = variance[prop];
       return value >= min && value <= max;
     });
-
-    return matches;
   });
 
   const sorted = matching.sort((a, b) => {
