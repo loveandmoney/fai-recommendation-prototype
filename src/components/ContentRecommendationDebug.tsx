@@ -15,6 +15,8 @@ export const ContentRecommendationDebug = () => {
   const pathname = usePathname();
 
   const viewedContentNames = viewedContent.map((c) => c.title);
+  const allViewedTags = viewedContent.flatMap((c) => c.tags);
+  const uniqueViewedTags = [...new Set(allViewedTags)];
 
   const handleReset = () => {
     resetViewedContent();
@@ -32,6 +34,11 @@ export const ContentRecommendationDebug = () => {
         <div>
           <pre>--Viewed Content--</pre>
           <pre>{JSON.stringify(viewedContentNames, null, 2)}</pre>
+        </div>
+
+        <div>
+          <pre>--Viewed Tags--</pre>
+          <pre>{JSON.stringify(uniqueViewedTags, null, 2)}</pre>
         </div>
 
         <Button onClick={handleReset} variant="secondary">

@@ -50,13 +50,13 @@ export const content: IContent[] = [
     title: 'Two-Storey vs Single-Storey',
     id: '7',
     tags: ['energy', 'style', 'budget'],
-    ranking: 'featured',
     text: 'This article explores two-storey vs single-storey in detail.',
   },
   {
     title: 'Energy Efficient Home Design',
     id: '8',
     tags: ['kitchen', 'energy'],
+    ranking: 'featured',
     text: 'This article explores energy efficient home design in detail.',
   },
   {
@@ -92,7 +92,6 @@ export const content: IContent[] = [
   {
     title: 'Interior Style Guide',
     id: '14',
-    ranking: 'featured',
     tags: ['lighting', 'home office', 'technology'],
     text: 'This article explores interior style guide in detail.',
   },
@@ -129,7 +128,6 @@ export const content: IContent[] = [
   {
     title: 'Top Inclusions to Look For',
     id: '20',
-    ranking: 'featured',
     tags: ['storage', 'kitchen', 'floorplans', 'bathroom'],
     text: 'This article explores top inclusions to look for in detail.',
   },
@@ -172,7 +170,6 @@ export const content: IContent[] = [
   {
     title: 'Outdoor Living Essentials',
     id: '27',
-    ranking: 'featured',
     tags: ['home office', 'interior', 'orientation', 'natural light'],
     text: 'This article explores outdoor living essentials in detail.',
   },
