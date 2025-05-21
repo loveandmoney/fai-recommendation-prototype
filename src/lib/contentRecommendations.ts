@@ -18,8 +18,11 @@ export function trackContentView(content: IContent) {
   localStorage.setItem(LS_KEY, JSON.stringify(updated));
 }
 
-export function getRecommendedContent(): IContent[] {
-  const viewed = getViewedContent();
+export function getRecommendedContent({
+  viewed,
+}: {
+  viewed: IContent[];
+}): IContent[] {
   if (viewed.length === 0) return [];
 
   const tagFrequency: Record<string, number> = {};
