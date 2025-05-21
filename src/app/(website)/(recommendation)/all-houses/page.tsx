@@ -1,6 +1,5 @@
-import { HouseData } from '@/components/HouseData';
+import { HouseLink } from '@/components/HouseLink';
 import { houses } from '@/data/houses';
-import Link from 'next/link';
 
 export default function AllHousesPage() {
   return (
@@ -9,9 +8,7 @@ export default function AllHousesPage() {
       <ul className="grid grid-cols-4 gap-4">
         {houses.map((house) => (
           <li key={house.id}>
-            <Link href={`/house/${house.id}`}>
-              <HouseData house={house} />
-            </Link>
+            <HouseLink house={house} />
           </li>
         ))}
       </ul>
