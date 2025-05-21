@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
 import {
   calculateVariance,
-  getPreferredCollections,
+  getPreferredCollection,
   getViewedHouses,
   resetViewedHouses,
   TVariance,
@@ -15,9 +15,8 @@ import { usePathname } from 'next/navigation';
 export const RecommendationDebug = () => {
   const [viewedHouses, setViewedHouses] = useState<IHouse[]>([]);
   const [variance, setVariance] = useState<TVariance | null>(null);
-  const [preferredCollections, setPreferredCollections] = useState<
-    TCollection[]
-  >([]);
+  const [preferredCollection, setPreferredCollection] =
+    useState<TCollection | null>(null);
   const pathname = usePathname();
 
   const viewedHouseNames = viewedHouses.map((h) => h.name);
@@ -26,14 +25,14 @@ export const RecommendationDebug = () => {
     resetViewedHouses();
     setViewedHouses([]);
     setVariance(calculateVariance([]));
-    setPreferredCollections([]);
+    setPreferredCollection(null);
   };
 
   useEffect(() => {
     const viewed = getViewedHouses();
     setViewedHouses(viewed);
     setVariance(calculateVariance(viewed));
-    setPreferredCollections(getPreferredCollections(viewed));
+    setPreferredCollection(getPreferredCollection(viewed));
   }, [pathname]);
 
   return (
@@ -55,8 +54,8 @@ export const RecommendationDebug = () => {
         </div>
 
         <div>
-          <pre>--Preferred Collections--</pre>
-          <pre>{JSON.stringify(preferredCollections, null, 2)}</pre>
+          <pre>--Preferred Collection--</pre>
+          <pre>{preferredCollection}</pre>
         </div>
 
         <Button onClick={handleReset} variant="secondary">

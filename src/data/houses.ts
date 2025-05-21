@@ -1,5 +1,6 @@
 export type TCollection = 'simplicity' | 'bridgewater' | 'elegance';
 type TFacade = 'brook' | 'cove' | 'lake' | 'valley' | 'river';
+type TRanking = 'anchored' | 'featured';
 
 export interface IHouse {
   id: number;
@@ -11,6 +12,7 @@ export interface IHouse {
   facades: TFacade[];
   stories: 1 | 2;
   name: string;
+  ranking?: TRanking;
 }
 
 export const houses: IHouse[] = [
@@ -35,6 +37,7 @@ export const houses: IHouse[] = [
     facades: ['valley', 'brook', 'cove'],
     stories: 2,
     name: 'Birchgrove',
+    ranking: 'anchored',
   },
   {
     id: 3,
@@ -46,6 +49,7 @@ export const houses: IHouse[] = [
     facades: ['brook', 'cove'],
     stories: 1,
     name: 'Cedarview',
+    ranking: 'featured',
   },
   {
     id: 4,
@@ -145,6 +149,7 @@ export const houses: IHouse[] = [
     facades: ['brook', 'lake', 'river'],
     stories: 2,
     name: 'Maplecroft',
+    ranking: 'featured',
   },
   {
     id: 13,
@@ -409,6 +414,7 @@ export const houses: IHouse[] = [
     facades: ['river', 'valley', 'brook'],
     stories: 1,
     name: 'Larkspur',
+    ranking: 'featured',
   },
   {
     id: 37,

@@ -34,7 +34,9 @@ export function trackHouseView(house: IHouse) {
   localStorage.setItem(LS_KEY, JSON.stringify(updated));
 }
 
-export function getPreferredCollections(viewHistory: IHouse[]): TCollection[] {
+export function getPreferredCollection(
+  viewHistory: IHouse[]
+): TCollection | null {
   const counts: Record<TCollection, number> = {
     simplicity: 0,
     bridgewater: 0,
@@ -46,11 +48,21 @@ export function getPreferredCollections(viewHistory: IHouse[]): TCollection[] {
   }
 
   const max = Math.max(...Object.values(counts));
-  if (max < 2) return [];
 
-  return (Object.entries(counts) as [TCollection, number][])
+  if (max < 2) return null;
+
+  const topCollections = (Object.entries(counts) as [TCollection, number][])
     .filter(([, count]) => count === max)
     .map(([collection]) => collection);
+
+  if (topCollections.length === 1) return topCollections[0];
+
+  for (let i = viewHistory.length - 1; i >= 0; i--) {
+    const c = viewHistory[i].collection;
+    if (topCollections.includes(c)) return c;
+  }
+
+  return null;
 }
 
 export function calculateVariance(houses: IHouse[]) {
@@ -98,22 +110,33 @@ export function getRecommendedHouses(): IHouse[] {
   if (viewed.length === 0) return [];
 
   const variance = calculateVariance(viewed);
+  const preferredCollection = getPreferredCollection(viewed);
 
-  const filteredByVariance = houses.filter((house) =>
-    properties.every((prop) => {
+  const anchored: IHouse[] = houses.filter((h) => h.ranking === 'anchored');
+
+  const matching: IHouse[] = houses.filter((house) => {
+    if (house.ranking === 'anchored') return false; // already handled
+
+    const matches = properties.every((prop) => {
       const value = house[prop];
       const { min, max } = variance[prop];
       return value >= min && value <= max;
-    })
-  );
+    });
 
-  const preferredCollections = getPreferredCollections(viewed);
+    return matches;
+  });
 
-  const sortedByPreferredCollections = [...filteredByVariance].sort((a, b) => {
-    const aPref = preferredCollections.includes(a.collection) ? 1 : 0;
-    const bPref = preferredCollections.includes(b.collection) ? 1 : 0;
+  const sorted = matching.sort((a, b) => {
+    const aRank = a.ranking === 'featured' ? 1 : 0;
+    const bRank = b.ranking === 'featured' ? 1 : 0;
+    if (aRank !== bRank) return bRank - aRank;
+
+    const aPref =
+      preferredCollection && a.collection === preferredCollection ? 1 : 0;
+    const bPref =
+      preferredCollection && b.collection === preferredCollection ? 1 : 0;
     return bPref - aPref;
   });
 
-  return sortedByPreferredCollections;
+  return [...anchored, ...sorted];
 }
