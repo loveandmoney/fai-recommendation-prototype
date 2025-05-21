@@ -1,5 +1,5 @@
-import { HouseData } from '@/components/HouseData';
 import { houses } from '@/data/houses';
+import HouseContent from './content';
 
 export interface IPageProps {
   params: {
@@ -7,7 +7,7 @@ export interface IPageProps {
   };
 }
 
-export default async function HousePage({ params }: IPageProps) {
+export default function HousePage({ params }: IPageProps) {
   const idNumber = Number(params.id);
 
   const house = houses.find((h) => h.id === idNumber);
@@ -16,7 +16,7 @@ export default async function HousePage({ params }: IPageProps) {
     return <div>House not found</div>;
   }
 
-  return <HouseData house={house} />;
+  return <HouseContent house={house} />;
 }
 
 export async function generateStaticParams() {
