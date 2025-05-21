@@ -9,8 +9,16 @@ export const Header = () => {
         <LinkButton href="/" title="Home" />
         <LinkButton href="/search" title="Search" />
         <LinkButton href="/form" title="Form" />
-        <LinkButton href="/recommendations" title="Recommendations" />
         <LinkButton href="/all-houses" title="All Houses" />
+        <LinkButton
+          href="/house-recommendations"
+          title="House Recommendations"
+        />
+        <LinkButton href="/all-content" title="All Content" />
+        <LinkButton
+          href="/content-recommendations"
+          title="Content Recommendations"
+        />
       </nav>
     </header>
   );

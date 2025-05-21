@@ -12,7 +12,7 @@ import {
 import { IHouse, TCollection } from '@/data/houses';
 import { usePathname } from 'next/navigation';
 
-export const RecommendationDebug = () => {
+export const HouseRecommendationDebug = () => {
   const [viewedHouses, setViewedHouses] = useState<IHouse[]>([]);
   const [variance, setVariance] = useState<TVariance | null>(null);
   const [preferredCollection, setPreferredCollection] =

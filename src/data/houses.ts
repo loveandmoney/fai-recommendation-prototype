@@ -1,6 +1,7 @@
+import { TRanking } from '@/types';
+
 export type TCollection = 'simplicity' | 'bridgewater' | 'elegance';
 type TFacade = 'brook' | 'cove' | 'lake' | 'valley' | 'river';
-type TRanking = 'anchored' | 'featured';
 
 export interface IHouse {
   id: number;

@@ -15,6 +15,8 @@ export interface IUserPreferences {
   stories: TNumberStories | null;
 }
 
+export type TRanking = 'anchored' | 'featured';
+
 export interface IImage {
   _type: 'image';
   asset: {
