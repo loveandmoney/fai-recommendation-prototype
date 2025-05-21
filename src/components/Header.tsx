@@ -7,8 +7,10 @@ export const Header = () => {
     <header>
       <nav className="flex gap-4 p-8">
         <LinkButton href="/" title="Home" />
-        <LinkButton href="/houses" title="Houses" />
+        <LinkButton href="/search" title="Search" />
         <LinkButton href="/form" title="Form" />
+        <LinkButton href="/recommendations" title="Recommendations" />
+        <LinkButton href="/all-houses" title="All Houses" />
       </nav>
     </header>
   );
