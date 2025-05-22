@@ -4,10 +4,8 @@ import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
 import { usePathname } from 'next/navigation';
 import { IContent } from '@/data/content';
-import {
-  getViewedContent,
-  resetViewedContent,
-} from '@/lib/contentRecommendations';
+
+import { apiService } from '@/lib/apiService';
 
 export const ContentRecommendationDebug = () => {
   const [viewedContent, setViewedContent] = useState<IContent[]>([]);
@@ -19,13 +17,16 @@ export const ContentRecommendationDebug = () => {
   const uniqueViewedTags = [...new Set(allViewedTags)];
 
   const handleReset = () => {
-    resetViewedContent();
+    apiService.clearContentHistoryCookie();
     setViewedContent([]);
   };
 
   useEffect(() => {
-    const viewed = getViewedContent();
-    setViewedContent(viewed);
+    const getContentHistory = async () => {
+      const history = await apiService.getContentHistoryCookie();
+      setViewedContent(history);
+    };
+    getContentHistory();
   }, [pathname]);
 
   return (

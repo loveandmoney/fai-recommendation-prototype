@@ -8,8 +8,7 @@ import { apiService } from '@/lib/apiService';
 export const ContentLink = ({ content }: { content: IContent }) => {
   const handleClick = async () => {
     try {
-      await apiService.setContentHistoryCookie({ history: [content] });
-      console.log('updated!');
+      await apiService.setContentHistoryCookie({ newContent: content });
     } catch (error) {
       console.error('Error tracking content view:', error);
     }
