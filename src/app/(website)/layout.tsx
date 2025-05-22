@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '../globals.css';
-import { PostHogProvider } from './providers';
 import { Header } from '@/components/Header';
 import clsx from 'clsx';
 
@@ -29,10 +28,8 @@ export default function RootLayout({
     <div
       className={clsx(geistSans.variable, geistMono.variable, 'antialiased ')}
     >
-      <PostHogProvider>
-        <Header />
-        <main className="p-8">{children}</main>
-      </PostHogProvider>
+      <Header />
+      <main className="p-8">{children}</main>
     </div>
   );
 }

@@ -33,8 +33,6 @@ export const useUserPreferencesStore = create<UserPreferencesState>()(
           isInitialUserPreferences:
             JSON.stringify(updated) === JSON.stringify(initialUserPreferences),
         });
-
-        // Optional: debounce posthog.people.set(updated)
       },
 
       resetUserPreferences: () => {

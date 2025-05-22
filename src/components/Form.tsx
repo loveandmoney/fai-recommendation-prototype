@@ -1,8 +1,6 @@
 'use client';
 
 import { Button } from './ui/button';
-import posthog from 'posthog-js';
-import { useEffect } from 'react';
 import { Slider } from './ui/slider';
 import { TBuyerTag, TServiceTag } from '@/lib/dynamicTags';
 import { useUserPreferencesStore } from '@/stores/useUserPreferences';
@@ -11,12 +9,7 @@ export const Form = () => {
   const { setUserPreferences, userPreferences, resetUserPreferences } =
     useUserPreferencesStore();
 
-  const budget = userPreferences.budget;
-
   const selectBuyerType = (buyerType: TBuyerTag) => {
-    posthog.capture('selected_buyer_type', {
-      type: buyerType,
-    });
     setUserPreferences({
       ...userPreferences,
       buyerType,
@@ -24,9 +17,6 @@ export const Form = () => {
   };
 
   const selectServiceType = (serviceType: TServiceTag) => {
-    posthog.capture('selected_service_type', {
-      type: serviceType,
-    });
     setUserPreferences({
       ...userPreferences,
       serviceType,
@@ -39,17 +29,6 @@ export const Form = () => {
       budget,
     });
   };
-
-  // Debounce budget PostHog event
-  useEffect(() => {
-    const DEBOUNCE_TIME_MS = 500;
-
-    const timeout = setTimeout(() => {
-      posthog.capture('selected_budget', { budget });
-    }, DEBOUNCE_TIME_MS);
-
-    return () => clearTimeout(timeout);
-  }, [budget]);
 
   return (
     <div className="grid gap-4">
