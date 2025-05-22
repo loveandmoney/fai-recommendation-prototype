@@ -3,26 +3,20 @@ import { IContent } from '@/data/content';
 const apiEndpoint = `${process.env.NEXT_PUBLIC_SITE_URL}/api`;
 
 const endpoint = {
-  getRecommendedContent: `${apiEndpoint}/get-recommended-content`,
+  setContentHistoryCookie: `${apiEndpoint}/set-content-history-cookie`,
 };
 
 export const apiService = {
-  async getRecommendedContent(body: { contentHistory: IContent[] }) {
-    const response = await fetch(endpoint.getRecommendedContent, {
+  async setContentHistoryCookie({ history }: { history: IContent[] }) {
+    const response = await fetch(endpoint.setContentHistoryCookie, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ history }),
     });
 
     if (!response.ok) {
-      throw new Error('Error determining message type');
+      throw new Error('Error fetching view history');
     }
-
-    const { recommendedContent } = (await response.json()) as {
-      recommendedContent: IContent[];
-    };
-    return recommendedContent;
   },
 };

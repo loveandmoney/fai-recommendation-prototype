@@ -2,12 +2,17 @@
 
 import Link from 'next/link';
 import { IContent } from '@/data/content';
-import { trackContentView } from '@/lib/contentRecommendations';
 import { ContentData } from './ContentData';
+import { apiService } from '@/lib/apiService';
 
 export const ContentLink = ({ content }: { content: IContent }) => {
-  const handleClick = () => {
-    trackContentView(content);
+  const handleClick = async () => {
+    try {
+      await apiService.setContentHistoryCookie({ history: [content] });
+      console.log('updated!');
+    } catch (error) {
+      console.error('Error tracking content view:', error);
+    }
   };
 
   return (

@@ -19,6 +19,8 @@ export const Header = () => {
           href="/content-recommendations"
           title="Content Recommendations"
         />
+        <LinkButton href="/set-cookie" title="Set Cookie" />
+        <LinkButton href="/get-cookie" title="Get Cookie" />
       </nav>
     </header>
   );
