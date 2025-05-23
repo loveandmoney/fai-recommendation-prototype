@@ -1,3 +1,4 @@
+import { MAX_HOUSE_HISTORY_LENGTH } from '@/constants';
 import { houses, IHouse, TCollection } from '@/data/houses';
 
 const properties = [
@@ -11,28 +12,11 @@ const properties = [
 export type TVarianceKey = (typeof properties)[number];
 export type TVariance = Record<TVarianceKey, { min: number; max: number }>;
 
-const LS_KEY = 'user_viewed_houses';
 const VARIANCE_PADDING_COST_FACTOR = 0.2;
 const VARIANCE_PADDING_STORIES = 0;
 const VARIANCE_PADDING_BEDS = 1;
 const VARIANCE_PADDING_BATHS = 1;
 const VARIANCE_PADDING_LIVINGROOMS = 1;
-const HISTORY_LIMIT = 3; // 3 is good as avoids ties, if adjusting may need to tweak preferred collections logic e.g. 'max < 2'
-
-export function getViewedHouses(): IHouse[] {
-  const data = localStorage.getItem(LS_KEY);
-  return data ? JSON.parse(data) : [];
-}
-
-export function resetViewedHouses() {
-  localStorage.removeItem(LS_KEY);
-}
-
-export function trackHouseView(house: IHouse) {
-  const current = getViewedHouses().filter((h) => h.id !== house.id);
-  const updated = [...current.slice(-HISTORY_LIMIT + 1), house];
-  localStorage.setItem(LS_KEY, JSON.stringify(updated));
-}
 
 export function getPreferredCollection(
   viewHistory: IHouse[]
@@ -48,8 +32,9 @@ export function getPreferredCollection(
   }
 
   const max = Math.max(...Object.values(counts));
+  const preferredCollectionCountThreshold = MAX_HOUSE_HISTORY_LENGTH - 1;
 
-  if (max < 2) return null;
+  if (max < preferredCollectionCountThreshold) return null;
 
   const topCollections = (Object.entries(counts) as [TCollection, number][])
     .filter(([, count]) => count === max)
@@ -105,8 +90,11 @@ export function calculateVariance(houses: IHouse[]) {
   }, {} as TVariance);
 }
 
-export function getRecommendedHouses(): IHouse[] {
-  const viewed = getViewedHouses();
+export function getRecommendedHouses({
+  viewed,
+}: {
+  viewed: IHouse[];
+}): IHouse[] {
   if (viewed.length === 0) return [];
 
   const mostRecentId = viewed[viewed.length - 1]?.id;

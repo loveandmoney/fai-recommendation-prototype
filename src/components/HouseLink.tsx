@@ -3,11 +3,15 @@
 import Link from 'next/link';
 import { HouseData } from './HouseData';
 import { IHouse } from '@/data/houses';
-import { trackHouseView } from '@/lib/homeRecommendations';
+import { apiService } from '@/lib/apiService';
 
 export const HouseLink = ({ house }: { house: IHouse }) => {
-  const handleClick = () => {
-    trackHouseView(house);
+  const handleClick = async () => {
+    try {
+      await apiService.setHouseHistoryCookie({ newHouse: house });
+    } catch (error) {
+      console.error('Error tracking content view:', error);
+    }
   };
 
   return (

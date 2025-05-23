@@ -1,18 +1,18 @@
 import {
-  CONTENT_HISTORY_COOKIE_NAME,
-  MAX_CONTENT_HISTORY_LENGTH,
+  HOUSE_HISTORY_COOKIE_NAME,
+  MAX_HOUSE_HISTORY_LENGTH,
 } from '@/constants';
-import { IContent } from '@/data/content';
+import { IHouse } from '@/data/houses';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 export const POST = async (req: NextRequest) => {
-  const { newContent } = (await req.json()) as { newContent: IContent };
+  const { newHouse } = (await req.json()) as { newHouse: IHouse };
 
   const cookieStore = await cookies();
 
-  const raw = cookieStore.get(CONTENT_HISTORY_COOKIE_NAME)?.value || '';
-  let history: IContent[] = [];
+  const raw = cookieStore.get(HOUSE_HISTORY_COOKIE_NAME)?.value || '';
+  let history: IHouse[] = [];
 
   try {
     history = JSON.parse(decodeURIComponent(raw));
@@ -20,20 +20,20 @@ export const POST = async (req: NextRequest) => {
     history = [];
   }
 
-  if (history.at(-1)?.id === newContent.id) {
+  if (history.at(-1)?.id === newHouse.id) {
     return new NextResponse(JSON.stringify({ status: 200 }));
   }
 
-  if (history.length >= MAX_CONTENT_HISTORY_LENGTH) {
-    history = history.slice(-MAX_CONTENT_HISTORY_LENGTH + 1);
+  if (history.length >= MAX_HOUSE_HISTORY_LENGTH) {
+    history = history.slice(-MAX_HOUSE_HISTORY_LENGTH + 1);
   }
 
-  history.push(newContent);
+  history.push(newHouse);
 
   const cookieValue = encodeURIComponent(JSON.stringify(history));
 
   const res = new NextResponse(JSON.stringify({ status: 200 }));
-  res.cookies.set(CONTENT_HISTORY_COOKIE_NAME, cookieValue, {
+  res.cookies.set(HOUSE_HISTORY_COOKIE_NAME, cookieValue, {
     path: '/',
     httpOnly: true,
   });

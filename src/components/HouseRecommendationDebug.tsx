@@ -5,12 +5,11 @@ import { Button } from './ui/button';
 import {
   calculateVariance,
   getPreferredCollection,
-  getViewedHouses,
-  resetViewedHouses,
   TVariance,
 } from '@/lib/homeRecommendations';
 import { IHouse, TCollection } from '@/data/houses';
 import { usePathname } from 'next/navigation';
+import { apiService } from '@/lib/apiService';
 
 export const HouseRecommendationDebug = () => {
   const [viewedHouses, setViewedHouses] = useState<IHouse[]>([]);
@@ -22,17 +21,20 @@ export const HouseRecommendationDebug = () => {
   const viewedHouseNames = viewedHouses.map((h) => h.name);
 
   const handleReset = () => {
-    resetViewedHouses();
+    apiService.clearHouseHistoryCookie();
     setViewedHouses([]);
     setVariance(calculateVariance([]));
     setPreferredCollection(null);
   };
 
   useEffect(() => {
-    const viewed = getViewedHouses();
-    setViewedHouses(viewed);
-    setVariance(calculateVariance(viewed));
-    setPreferredCollection(getPreferredCollection(viewed));
+    const getHouseHistory = async () => {
+      const history = await apiService.getHouseHistoryCookie();
+      setViewedHouses(history);
+      setVariance(calculateVariance(history));
+      setPreferredCollection(getPreferredCollection(history));
+    };
+    getHouseHistory();
   }, [pathname]);
 
   return (

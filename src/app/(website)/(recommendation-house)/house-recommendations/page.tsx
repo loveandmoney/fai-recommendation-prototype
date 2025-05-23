@@ -1,16 +1,20 @@
-'use client';
-
 import { HouseLink } from '@/components/HouseLink';
+import { HOUSE_HISTORY_COOKIE_NAME } from '@/constants';
 import { IHouse } from '@/data/houses';
 import { getRecommendedHouses } from '@/lib/homeRecommendations';
-import { useEffect, useState } from 'react';
+import { cookies } from 'next/headers';
 
-export default function RecommendationsPage() {
-  const [recommendations, setRecommendations] = useState<IHouse[]>([]);
+export default async function RecommendationsPage() {
+  const cookieStore = await cookies();
 
-  useEffect(() => {
-    setRecommendations(getRecommendedHouses());
-  }, []);
+  const raw = cookieStore.get(HOUSE_HISTORY_COOKIE_NAME)?.value || '';
+  let viewed: IHouse[] = [];
+
+  try {
+    viewed = JSON.parse(decodeURIComponent(raw));
+  } catch {}
+
+  const recommendations = getRecommendedHouses({ viewed });
 
   return (
     <>
