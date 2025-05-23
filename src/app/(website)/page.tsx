@@ -58,6 +58,71 @@ export default async function HomePage() {
           ))}
         </div>
       </div>
+
+      <div className="grid gap-6 grid-cols-2">
+        <div>
+          <h2 className="font-bold text-lg">House Recommendation Logic</h2>
+          <ol>
+            <li>
+              <strong>If the user hasn&apos;t viewed any houses:</strong>
+              <ul>
+                <li>Show anchored houses first</li>
+                <li>Then show featured houses</li>
+                <li>Then show random houses</li>
+              </ul>
+            </li>
+            <li>
+              <strong>If the user has viewed houses:</strong>
+              <ul>
+                <li>Track &lt;3&gt; most recently viewed houses</li>
+                <li>
+                  Calculate the range for price, beds, baths, etc. from the view
+                  history
+                </li>
+                <li>
+                  Add padding as configured to increase the range slightly
+                </li>
+                <li>
+                  Find houses that match this range and haven&apos;t been viewed
+                  yet
+                </li>
+                <li>
+                  Always anchored houses first, then matching featured results,
+                  then all other results
+                </li>
+                <li>Fill with randpm options if not enough are found</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+
+        <div>
+          <h2 className="font-bold text-lg">Content Recommendation Logic</h2>
+          <ol>
+            <li>
+              <strong>If the user hasn&apos;t viewed any content:</strong>
+              <ul>
+                <li>Show anchored content first</li>
+                <li>Then show featured content</li>
+                <li>Then show random content</li>
+              </ul>
+            </li>
+            <li>
+              <strong>If the user has viewed content:</strong>
+              <ul>
+                <li>Track &lt;2&gt; most recently viewed content</li>
+                <li>Exclude any content they&apos;ve already seen</li>
+                <li>Score the rest based on shared tags with viewed items</li>
+                <li>
+                  Always show anchored items, the filtered featured items, then
+                  other results by tag match score
+                </li>
+                <li>Pad with fallback content if the list is too short</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+      </div>
     </div>
   );
 }
