@@ -1,11 +1,33 @@
 import { content, IContent } from '@/data/content';
 
+function getFallbackContent(): IContent[] {
+  const anchored = content.filter((c) => c.ranking === 'anchored');
+  const featured = content.filter(
+    (c) => c.ranking === 'featured' && !anchored.some((a) => a.id === c.id)
+  );
+
+  const usedIds = new Set([...anchored, ...featured].map((h) => h.id));
+
+  const random = content
+    .filter((h) => !usedIds.has(h.id))
+    .sort(() => 0.5 - Math.random());
+
+  return [...anchored, ...featured, ...random];
+}
+
 export function getRecommendedContent({
   viewed,
+  maxNumber,
 }: {
   viewed: IContent[];
+  maxNumber?: number;
 }): IContent[] {
-  if (viewed.length === 0) return [];
+  if (viewed.length === 0) {
+    const fallback = getFallbackContent();
+    return typeof maxNumber === 'number'
+      ? fallback.slice(0, maxNumber)
+      : fallback;
+  }
 
   const tagFrequency: Record<string, number> = {};
   viewed.forEach((item) => {
@@ -42,5 +64,6 @@ export function getRecommendedContent({
     })
     .map(({ item }) => item);
 
-  return [...anchored, ...scored];
+  const results = [...anchored, ...scored];
+  return typeof maxNumber === 'number' ? results.slice(0, maxNumber) : results;
 }

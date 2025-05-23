@@ -18,6 +18,21 @@ const VARIANCE_PADDING_BEDS = 1;
 const VARIANCE_PADDING_BATHS = 1;
 const VARIANCE_PADDING_LIVINGROOMS = 1;
 
+function getFallbackHouses(): IHouse[] {
+  const anchored = houses.filter((c) => c.ranking === 'anchored');
+  const featured = houses.filter(
+    (c) => c.ranking === 'featured' && !anchored.some((a) => a.id === c.id)
+  );
+
+  const usedIds = new Set([...anchored, ...featured].map((h) => h.id));
+
+  const random = houses
+    .filter((h) => !usedIds.has(h.id))
+    .sort(() => 0.5 - Math.random());
+
+  return [...anchored, ...featured, ...random];
+}
+
 export function getPreferredCollection(
   viewHistory: IHouse[]
 ): TCollection | null {
@@ -92,10 +107,17 @@ export function calculateVariance(houses: IHouse[]) {
 
 export function getRecommendedHouses({
   viewed,
+  maxNumber,
 }: {
   viewed: IHouse[];
+  maxNumber?: number;
 }): IHouse[] {
-  if (viewed.length === 0) return [];
+  if (viewed.length === 0) {
+    const fallback = getFallbackHouses();
+    return typeof maxNumber === 'number'
+      ? fallback.slice(0, maxNumber)
+      : fallback;
+  }
 
   const mostRecentId = viewed[viewed.length - 1]?.id;
   const variance = calculateVariance(viewed);
@@ -128,5 +150,6 @@ export function getRecommendedHouses({
     return bPref - aPref;
   });
 
-  return [...anchored, ...sorted];
+  const results = [...anchored, ...sorted];
+  return typeof maxNumber === 'number' ? results.slice(0, maxNumber) : results;
 }

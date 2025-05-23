@@ -1,46 +1,65 @@
-import { DynamicFeaturedHouse } from '@/components/DynamicFeaturedHouse';
-import { client } from '@/sanity/lib/client';
-import { HOUSE_FRAGMENT, IHouse } from '@/sanity/schemaTypes/documents/house';
+import { ContentLink } from '@/components/ContentLink';
+import { HouseLink } from '@/components/HouseLink';
 import {
-  DYNAMIC_PAGE_FRAGMENT,
-  IDynamicPage,
-} from '@/sanity/schemaTypes/singletons/dynamicPage';
-import {
-  ISettings,
-  SETTINGS_FRAGMENT,
-} from '@/sanity/schemaTypes/singletons/settings';
-import { DynamicPageContent } from '@/slices/DynamicPageContent';
-
-interface IQueryResponse {
-  dynamicPage: IDynamicPage;
-  houses: IHouse[];
-  settings: ISettings;
-}
+  CONTENT_HISTORY_COOKIE_NAME,
+  HOUSE_HISTORY_COOKIE_NAME,
+} from '@/constants';
+import { IContent } from '@/data/content';
+import { IHouse } from '@/data/houses';
+import { getRecommendedContent } from '@/lib/contentRecommendations';
+import { getRecommendedHouses } from '@/lib/homeRecommendations';
+import { cookies } from 'next/headers';
 
 export default async function HomePage() {
-  const query = `{
-    "dynamicPage": *[_type == "dynamicPage"][0] {
-      ${DYNAMIC_PAGE_FRAGMENT}
-    },
-    "houses": *[_type == "house"] {
-      ${HOUSE_FRAGMENT}
-    },
-    "settings": *[_type == "settings"][0] {
-      ${SETTINGS_FRAGMENT}
-    }
-  }`;
+  const cookieStore = await cookies();
 
-  const { dynamicPage, houses, settings } = (await client.fetch(
-    query
-  )) as IQueryResponse;
+  // Houses
+  const rawHouseHistory =
+    cookieStore.get(HOUSE_HISTORY_COOKIE_NAME)?.value || '';
+  let houseHistory: IHouse[] = [];
+
+  try {
+    houseHistory = JSON.parse(decodeURIComponent(rawHouseHistory));
+  } catch {}
+
+  const recommendedHouses = getRecommendedHouses({
+    viewed: houseHistory,
+    maxNumber: 4,
+  });
+
+  // Content
+  const rawContentHistory =
+    cookieStore.get(CONTENT_HISTORY_COOKIE_NAME)?.value || '';
+  let contentHistory: IContent[] = [];
+
+  try {
+    contentHistory = JSON.parse(decodeURIComponent(rawContentHistory));
+  } catch {}
+
+  const recommendedContent = getRecommendedContent({
+    viewed: contentHistory,
+    maxNumber: 4,
+  });
 
   return (
-    <div className="grid grid-cols-2 gap-4">
-      <DynamicFeaturedHouse
-        houses={houses}
-        featuredHouse={settings.defaultFeaturedHouse}
-      />
-      <DynamicPageContent sections={dynamicPage.dynamicContent} />
+    <div className="grid gap-10">
+      <div className="grid gap-2">
+        <h2 className="font-bold text-lg">Recommended Homes</h2>
+        <div className="grid grid-cols-4 gap-4">
+          {recommendedHouses.map((house) => (
+            <HouseLink house={house} key={house.id} />
+          ))}
+        </div>
+      </div>
+
+      <div className="grid gap-2">
+        <h2 className="font-bold text-lg">Recommended Content</h2>
+        <div className="grid grid-cols-4 gap-4">
+          {recommendedContent.map((content) => (
+            <ContentLink content={content} key={content.id} />
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
