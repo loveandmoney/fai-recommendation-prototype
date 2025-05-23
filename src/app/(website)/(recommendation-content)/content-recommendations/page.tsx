@@ -8,13 +8,13 @@ export default async function RecommendationsPage() {
   const cookieStore = await cookies();
 
   const raw = cookieStore.get(CONTENT_HISTORY_COOKIE_NAME)?.value || '';
-  let viewed: IContent[] = [];
+  let history: IContent[] = [];
 
   try {
-    viewed = JSON.parse(decodeURIComponent(raw));
+    history = JSON.parse(decodeURIComponent(raw));
   } catch {}
 
-  const recommendations = getRecommendedContent({ viewed });
+  const recommendations = getRecommendedContent({ history, entries: 50 });
 
   return (
     <>

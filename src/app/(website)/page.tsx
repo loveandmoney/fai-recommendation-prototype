@@ -24,7 +24,6 @@ export default async function HomePage() {
 
   const recommendedHouses = getRecommendedHouses({
     viewed: houseHistory,
-    maxNumber: 4,
   });
 
   // Content
@@ -37,8 +36,7 @@ export default async function HomePage() {
   } catch {}
 
   const recommendedContent = getRecommendedContent({
-    viewed: contentHistory,
-    maxNumber: 4,
+    history: contentHistory,
   });
 
   return (

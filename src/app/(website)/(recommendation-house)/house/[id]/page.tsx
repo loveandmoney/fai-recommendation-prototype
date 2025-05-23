@@ -8,9 +8,7 @@ export interface IPageProps {
 }
 
 export default function HousePage({ params }: IPageProps) {
-  const idNumber = Number(params.id);
-
-  const house = houses.find((h) => h.id === idNumber);
+  const house = houses.find((h) => h.id === params.id);
 
   if (!house) {
     return <div>House not found</div>;
@@ -21,6 +19,6 @@ export default function HousePage({ params }: IPageProps) {
 
 export async function generateStaticParams() {
   return houses.map((house) => ({
-    id: house.id.toString(),
+    id: house.id,
   }));
 }

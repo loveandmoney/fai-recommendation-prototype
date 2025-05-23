@@ -18,13 +18,21 @@ const VARIANCE_PADDING_BEDS = 1;
 const VARIANCE_PADDING_BATHS = 1;
 const VARIANCE_PADDING_LIVINGROOMS = 1;
 
-function getFallbackHouses(): IHouse[] {
-  const anchored = houses.filter((c) => c.ranking === 'anchored');
-  const featured = houses.filter(
-    (c) => c.ranking === 'featured' && !anchored.some((a) => a.id === c.id)
+function getFallbackHouses(excludeIds: Set<string> = new Set()): IHouse[] {
+  const anchored = houses.filter(
+    (house) => house.ranking === 'anchored' && !excludeIds.has(house.id)
   );
 
-  const usedIds = new Set([...anchored, ...featured].map((h) => h.id));
+  const featured = houses.filter(
+    (c) =>
+      c.ranking === 'featured' &&
+      !anchored.some((a) => a.id === c.id) &&
+      !excludeIds.has(c.id)
+  );
+
+  const usedIds = new Set(
+    [...anchored, ...featured].map((h) => h.id).concat([...excludeIds])
+  );
 
   const random = houses
     .filter((h) => !usedIds.has(h.id))
@@ -107,29 +115,33 @@ export function calculateVariance(houses: IHouse[]) {
 
 export function getRecommendedHouses({
   viewed,
-  maxNumber,
+  entries = 4,
 }: {
   viewed: IHouse[];
-  maxNumber?: number;
+  entries?: number;
 }): IHouse[] {
   if (viewed.length === 0) {
-    const fallback = getFallbackHouses();
-    return typeof maxNumber === 'number'
-      ? fallback.slice(0, maxNumber)
-      : fallback;
+    return getFallbackHouses().slice(0, entries);
   }
 
-  const mostRecentId = viewed[viewed.length - 1]?.id;
+  const mostRecentId = viewed.at(-1)?.id;
   const variance = calculateVariance(viewed);
   const preferredCollection = getPreferredCollection(viewed);
+  const viewedIds = new Set(viewed.map((v) => v.id));
 
   const anchored: IHouse[] = houses.filter(
-    (h) => h.ranking === 'anchored' && h.id !== mostRecentId
+    (h) =>
+      h.ranking === 'anchored' && h.id !== mostRecentId && !viewedIds.has(h.id)
   );
 
   const matching: IHouse[] = houses.filter((house) => {
-    if (house.ranking === 'anchored') return false;
-    if (house.id === mostRecentId) return false;
+    if (
+      house.ranking === 'anchored' ||
+      house.id === mostRecentId ||
+      viewedIds.has(house.id)
+    ) {
+      return false;
+    }
 
     return properties.every((prop) => {
       const value = house[prop];
@@ -150,6 +162,12 @@ export function getRecommendedHouses({
     return bPref - aPref;
   });
 
-  const results = [...anchored, ...sorted];
-  return typeof maxNumber === 'number' ? results.slice(0, maxNumber) : results;
+  const recommended = [...anchored, ...sorted].slice(0, entries);
+
+  if (recommended.length >= entries) return recommended;
+
+  const usedIds = new Set([...recommended, ...viewed].map((h) => h.id));
+  const fallback = getFallbackHouses(usedIds);
+
+  return [...recommended, ...fallback].slice(0, entries);
 }

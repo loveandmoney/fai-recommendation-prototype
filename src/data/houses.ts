@@ -4,7 +4,7 @@ export type TCollection = 'simplicity' | 'bridgewater' | 'elegance';
 type TFacade = 'brook' | 'cove' | 'lake' | 'valley' | 'river';
 
 export interface IHouse {
-  id: number;
+  id: string;
   cost: number;
   beds: number;
   bathrooms: number;
@@ -18,7 +18,7 @@ export interface IHouse {
 
 export const houses: IHouse[] = [
   {
-    id: 1,
+    id: '1',
     cost: 702542,
     beds: 4,
     bathrooms: 4,
@@ -29,7 +29,7 @@ export const houses: IHouse[] = [
     name: 'Ashwood',
   },
   {
-    id: 2,
+    id: '2',
     cost: 553080,
     beds: 2,
     bathrooms: 4,
@@ -41,7 +41,7 @@ export const houses: IHouse[] = [
     ranking: 'anchored',
   },
   {
-    id: 3,
+    id: '3',
     cost: 525235,
     beds: 3,
     bathrooms: 4,
@@ -53,7 +53,7 @@ export const houses: IHouse[] = [
     ranking: 'featured',
   },
   {
-    id: 4,
+    id: '4',
     cost: 593859,
     beds: 5,
     bathrooms: 2,
@@ -64,7 +64,7 @@ export const houses: IHouse[] = [
     name: 'Dunmore',
   },
   {
-    id: 5,
+    id: '5',
     cost: 769942,
     beds: 3,
     bathrooms: 3,
@@ -75,7 +75,7 @@ export const houses: IHouse[] = [
     name: 'Elmsworth',
   },
   {
-    id: 6,
+    id: '6',
     cost: 419596,
     beds: 2,
     bathrooms: 2,
@@ -86,7 +86,7 @@ export const houses: IHouse[] = [
     name: 'Fairhaven',
   },
   {
-    id: 7,
+    id: '7',
     cost: 469774,
     beds: 4,
     bathrooms: 3,
@@ -97,7 +97,7 @@ export const houses: IHouse[] = [
     name: 'Glenbrook',
   },
   {
-    id: 8,
+    id: '8',
     cost: 848503,
     beds: 6,
     bathrooms: 4,
@@ -108,7 +108,7 @@ export const houses: IHouse[] = [
     name: 'Hawthorne',
   },
   {
-    id: 9,
+    id: '9',
     cost: 797951,
     beds: 6,
     bathrooms: 1,
@@ -119,7 +119,7 @@ export const houses: IHouse[] = [
     name: 'Ironwood',
   },
   {
-    id: 10,
+    id: '10',
     cost: 321612,
     beds: 4,
     bathrooms: 1,
@@ -130,7 +130,7 @@ export const houses: IHouse[] = [
     name: 'Juniper',
   },
   {
-    id: 11,
+    id: '11',
     cost: 318338,
     beds: 6,
     bathrooms: 2,
@@ -141,7 +141,7 @@ export const houses: IHouse[] = [
     name: 'Kingsford',
   },
   {
-    id: 12,
+    id: '12',
     cost: 531451,
     beds: 4,
     bathrooms: 3,
@@ -153,7 +153,7 @@ export const houses: IHouse[] = [
     ranking: 'featured',
   },
   {
-    id: 13,
+    id: '13',
     cost: 671559,
     beds: 5,
     bathrooms: 1,
@@ -164,7 +164,7 @@ export const houses: IHouse[] = [
     name: 'Northvale',
   },
   {
-    id: 14,
+    id: '14',
     cost: 764745,
     beds: 4,
     bathrooms: 3,
@@ -175,7 +175,7 @@ export const houses: IHouse[] = [
     name: 'Oakshade',
   },
   {
-    id: 15,
+    id: '15',
     cost: 742398,
     beds: 3,
     bathrooms: 1,
@@ -186,7 +186,7 @@ export const houses: IHouse[] = [
     name: 'Pinehaven',
   },
   {
-    id: 16,
+    id: '16',
     cost: 690580,
     beds: 5,
     bathrooms: 1,
@@ -197,7 +197,7 @@ export const houses: IHouse[] = [
     name: 'Quarryhill',
   },
   {
-    id: 17,
+    id: '17',
     cost: 884266,
     beds: 6,
     bathrooms: 1,
@@ -208,7 +208,7 @@ export const houses: IHouse[] = [
     name: 'Rivermoor',
   },
   {
-    id: 18,
+    id: '18',
     cost: 794704,
     beds: 3,
     bathrooms: 4,
@@ -219,7 +219,7 @@ export const houses: IHouse[] = [
     name: 'Stonebrook',
   },
   {
-    id: 19,
+    id: '19',
     cost: 602904,
     beds: 4,
     bathrooms: 1,
@@ -230,7 +230,7 @@ export const houses: IHouse[] = [
     name: 'Thornridge',
   },
   {
-    id: 20,
+    id: '20',
     cost: 717384,
     beds: 4,
     bathrooms: 1,
@@ -241,7 +241,7 @@ export const houses: IHouse[] = [
     name: 'Umberlyn',
   },
   {
-    id: 21,
+    id: '21',
     cost: 486950,
     beds: 3,
     bathrooms: 4,
@@ -252,7 +252,7 @@ export const houses: IHouse[] = [
     name: 'Valemont',
   },
   {
-    id: 22,
+    id: '22',
     cost: 659140,
     beds: 5,
     bathrooms: 2,
@@ -263,7 +263,7 @@ export const houses: IHouse[] = [
     name: 'Westgrove',
   },
   {
-    id: 23,
+    id: '23',
     cost: 487899,
     beds: 4,
     bathrooms: 3,
@@ -274,7 +274,7 @@ export const houses: IHouse[] = [
     name: 'Yorkridge',
   },
   {
-    id: 24,
+    id: '24',
     cost: 347456,
     beds: 2,
     bathrooms: 1,
@@ -285,7 +285,7 @@ export const houses: IHouse[] = [
     name: 'Zephyrwood',
   },
   {
-    id: 25,
+    id: '25',
     cost: 412716,
     beds: 6,
     bathrooms: 1,
@@ -296,7 +296,7 @@ export const houses: IHouse[] = [
     name: 'Amberfall',
   },
   {
-    id: 26,
+    id: '26',
     cost: 703260,
     beds: 2,
     bathrooms: 1,
@@ -307,7 +307,7 @@ export const houses: IHouse[] = [
     name: 'Briarstone',
   },
   {
-    id: 27,
+    id: '27',
     cost: 836851,
     beds: 3,
     bathrooms: 2,
@@ -318,7 +318,7 @@ export const houses: IHouse[] = [
     name: 'Clearfield',
   },
   {
-    id: 28,
+    id: '28',
     cost: 506125,
     beds: 3,
     bathrooms: 4,
@@ -329,7 +329,7 @@ export const houses: IHouse[] = [
     name: 'Duskmere',
   },
   {
-    id: 29,
+    id: '29',
     cost: 300962,
     beds: 2,
     bathrooms: 1,
@@ -340,7 +340,7 @@ export const houses: IHouse[] = [
     name: 'Eaglestone',
   },
   {
-    id: 30,
+    id: '30',
     cost: 828801,
     beds: 4,
     bathrooms: 1,
@@ -351,7 +351,7 @@ export const houses: IHouse[] = [
     name: 'Fernley',
   },
   {
-    id: 31,
+    id: '31',
     cost: 825264,
     beds: 6,
     bathrooms: 1,
@@ -362,7 +362,7 @@ export const houses: IHouse[] = [
     name: 'Grayshore',
   },
   {
-    id: 32,
+    id: '32',
     cost: 643218,
     beds: 6,
     bathrooms: 1,
@@ -373,7 +373,7 @@ export const houses: IHouse[] = [
     name: 'Heathmoor',
   },
   {
-    id: 33,
+    id: '33',
     cost: 505742,
     beds: 2,
     bathrooms: 2,
@@ -384,7 +384,7 @@ export const houses: IHouse[] = [
     name: 'Ivyridge',
   },
   {
-    id: 34,
+    id: '34',
     cost: 632874,
     beds: 4,
     bathrooms: 3,
@@ -395,7 +395,7 @@ export const houses: IHouse[] = [
     name: 'Jademont',
   },
   {
-    id: 35,
+    id: '35',
     cost: 612072,
     beds: 2,
     bathrooms: 2,
@@ -406,7 +406,7 @@ export const houses: IHouse[] = [
     name: 'Kestrelwood',
   },
   {
-    id: 36,
+    id: '36',
     cost: 661971,
     beds: 5,
     bathrooms: 1,
@@ -418,7 +418,7 @@ export const houses: IHouse[] = [
     ranking: 'featured',
   },
   {
-    id: 37,
+    id: '37',
     cost: 670860,
     beds: 4,
     bathrooms: 3,
@@ -429,7 +429,7 @@ export const houses: IHouse[] = [
     name: 'Meadowrun',
   },
   {
-    id: 38,
+    id: '38',
     cost: 768047,
     beds: 4,
     bathrooms: 3,
@@ -440,7 +440,7 @@ export const houses: IHouse[] = [
     name: 'Nighthollow',
   },
   {
-    id: 39,
+    id: '39',
     cost: 741711,
     beds: 6,
     bathrooms: 1,
@@ -451,7 +451,7 @@ export const houses: IHouse[] = [
     name: 'Oakhaven',
   },
   {
-    id: 40,
+    id: '40',
     cost: 479023,
     beds: 3,
     bathrooms: 3,
@@ -462,7 +462,7 @@ export const houses: IHouse[] = [
     name: 'Primrose',
   },
   {
-    id: 41,
+    id: '41',
     cost: 872004,
     beds: 3,
     bathrooms: 2,
@@ -473,7 +473,7 @@ export const houses: IHouse[] = [
     name: 'Queensbrook',
   },
   {
-    id: 42,
+    id: '42',
     cost: 671014,
     beds: 5,
     bathrooms: 3,
@@ -484,7 +484,7 @@ export const houses: IHouse[] = [
     name: 'Redwood',
   },
   {
-    id: 43,
+    id: '43',
     cost: 371318,
     beds: 4,
     bathrooms: 2,
@@ -495,7 +495,7 @@ export const houses: IHouse[] = [
     name: 'Silverpine',
   },
   {
-    id: 44,
+    id: '44',
     cost: 612912,
     beds: 5,
     bathrooms: 4,
@@ -506,7 +506,7 @@ export const houses: IHouse[] = [
     name: 'Timberfall',
   },
   {
-    id: 45,
+    id: '45',
     cost: 334057,
     beds: 6,
     bathrooms: 4,
@@ -517,7 +517,7 @@ export const houses: IHouse[] = [
     name: 'Uplands',
   },
   {
-    id: 46,
+    id: '46',
     cost: 798477,
     beds: 4,
     bathrooms: 4,
@@ -528,7 +528,7 @@ export const houses: IHouse[] = [
     name: 'Verdant',
   },
   {
-    id: 47,
+    id: '47',
     cost: 514878,
     beds: 4,
     bathrooms: 3,
@@ -539,7 +539,7 @@ export const houses: IHouse[] = [
     name: 'Willowmere',
   },
   {
-    id: 48,
+    id: '48',
     cost: 477454,
     beds: 5,
     bathrooms: 3,
@@ -550,7 +550,7 @@ export const houses: IHouse[] = [
     name: 'Xanwood',
   },
   {
-    id: 49,
+    id: '49',
     cost: 829346,
     beds: 2,
     bathrooms: 1,
@@ -561,7 +561,7 @@ export const houses: IHouse[] = [
     name: 'Yellowridge',
   },
   {
-    id: 50,
+    id: '50',
     cost: 343334,
     beds: 3,
     bathrooms: 2,
