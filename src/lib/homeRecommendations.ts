@@ -116,11 +116,14 @@ export function calculateVariance(houses: IHouse[]) {
 export function getRecommendedHouses({
   viewed,
   entries = 4,
+  matchingOnly = false,
 }: {
   viewed: IHouse[];
   entries?: number;
+  matchingOnly?: boolean;
 }): IHouse[] {
   if (viewed.length === 0) {
+    if (matchingOnly) return [];
     return getFallbackHouses().slice(0, entries);
   }
 
@@ -162,9 +165,11 @@ export function getRecommendedHouses({
     return bPref - aPref;
   });
 
-  const recommended = [...anchored, ...sorted].slice(0, entries);
+  const recommended = [...anchored, ...sorted];
 
-  if (recommended.length >= entries) return recommended;
+  if (matchingOnly || recommended.length >= entries) {
+    return [...recommended].slice(0, entries);
+  }
 
   const usedIds = new Set([...recommended, ...viewed].map((h) => h.id));
   const fallback = getFallbackHouses(usedIds);

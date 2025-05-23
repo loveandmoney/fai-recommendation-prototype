@@ -26,11 +26,14 @@ function getFallbackContent(excludeIds: Set<string> = new Set()): IContent[] {
 export function getRecommendedContent({
   history,
   entries = 4,
+  matchingOnly = false,
 }: {
   history: IContent[];
   entries?: number;
+  matchingOnly?: boolean;
 }): IContent[] {
   if (history.length === 0) {
+    if (matchingOnly) return [];
     return getFallbackContent().slice(0, entries);
   }
 
@@ -67,9 +70,11 @@ export function getRecommendedContent({
     })
     .map(({ item }) => item);
 
-  const recommended = [...anchored, ...scored].slice(0, entries);
+  const recommended = [...anchored, ...scored];
 
-  if (recommended.length >= entries) return recommended;
+  if (matchingOnly || recommended.length >= entries) {
+    return [...recommended].slice(0, entries);
+  }
 
   const usedIds = new Set(recommended.map((c) => c.id).concat([...viewedIds]));
   const fallback = getFallbackContent(usedIds);

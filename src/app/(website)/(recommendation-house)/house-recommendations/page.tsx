@@ -14,7 +14,11 @@ export default async function RecommendationsPage() {
     viewed = JSON.parse(decodeURIComponent(raw));
   } catch {}
 
-  const recommendations = getRecommendedHouses({ viewed, entries: 50 });
+  const recommendations = getRecommendedHouses({
+    viewed,
+    entries: 50,
+    matchingOnly: true,
+  });
 
   return (
     <>

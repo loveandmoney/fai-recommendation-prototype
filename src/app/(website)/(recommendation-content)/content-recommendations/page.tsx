@@ -14,7 +14,11 @@ export default async function RecommendationsPage() {
     history = JSON.parse(decodeURIComponent(raw));
   } catch {}
 
-  const recommendations = getRecommendedContent({ history, entries: 50 });
+  const recommendations = getRecommendedContent({
+    history,
+    entries: 50,
+    matchingOnly: true,
+  });
 
   return (
     <>
